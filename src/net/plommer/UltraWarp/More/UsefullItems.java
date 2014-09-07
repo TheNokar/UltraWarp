@@ -12,7 +12,7 @@ public class UsefullItems {
 	public static ItemStack WarpCompass() {
 		ItemStack item = new ItemStack(Material.COMPASS, 1);
 		ItemMeta im = item.getItemMeta();
-		im.setDisplayName(Utils.buildString("&6&lWarp Compass"));
+		im.setDisplayName(Utils.buildString("&6&lMy Warps"));
 		item.setItemMeta(im);
 		return item;
 	}

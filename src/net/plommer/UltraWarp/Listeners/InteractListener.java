@@ -2,6 +2,7 @@ package net.plommer.UltraWarp.Listeners;
 
 import net.plommer.UltraWarp.IconMenu;
 import net.plommer.UltraWarp.UltraWarp;
+import net.plommer.UltraWarp.Warps;
 import net.plommer.UltraWarp.More.UsefullItems;
 import net.plommer.UltraWarp.More.WarpPlayer;
 
@@ -33,10 +34,16 @@ public class InteractListener implements Listener {
 		                event.setWillClose(true);
 		            }
 		        }, plugin);
-		        //.setOption(3, new ItemStack(Material.APPLE, 1), "Food", "The food is delicious");
 				int i = 0;
-				for(String warp : plugin.warps.keySet()) {
-					menu.setOption(i, new ItemStack(Material.PAPER, 1), warp, "");
+				for(Warps w : plugin.db.checkWarpByUUID(player.getUniqueId())) {
+					String a;
+					if(w.isPublic()) {
+						a = ChatColor.GREEN + "Public";
+					} else {
+						a = ChatColor.RED + "Private";
+					}
+					String[] info = {ChatColor.AQUA + "Location: " + ChatColor.YELLOW + (int)w.getLocation()[0]+ ", " + (int)w.getLocation()[1] + ", " + (int)w.getLocation()[2], ChatColor.AQUA + "Status: " + a};
+					menu.setOption(i, new ItemStack(Material.PAPER, 1), w.getWarpName(), info);
 					i++;
 				}
 				menu.open(player);

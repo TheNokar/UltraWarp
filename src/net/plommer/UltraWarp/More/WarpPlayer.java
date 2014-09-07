@@ -9,9 +9,8 @@ import org.bukkit.entity.Player;
 public class WarpPlayer {
 
 	public static void playerTo(String name, Player player, UltraWarp plugin) {
-		if(plugin.warps.containsKey(name)) {
-			Warps warp = plugin.warps.get(name);
-			System.out.print(warp.getWarpName() + " " + warp.getLocation().toString());
+		Warps warp = plugin.db.checkWarp(name);
+		if(warp != null) {
 			player.teleport(warp.getInLocation());
 			Utils.sendMessage(player, "&aWelcome to " + name);
 		} else {

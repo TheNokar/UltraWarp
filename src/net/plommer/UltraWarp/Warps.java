@@ -14,6 +14,8 @@ public class Warps {
 	private String world;
 	private boolean isPublic;
 	
+	public Warps() {}
+	
 	public Warps(UUID playerUUID, String warpName, double[] loc, String world, boolean isPublic) {
 		setUUID(playerUUID);
 		setLocation(loc);
@@ -58,21 +60,6 @@ public class Warps {
 	}
 	public void setWorld(String world) {
 		this.world = world;
-	}
-	
-	public boolean isWarp(String name) {
-		System.out.print(name + ":" + getWarpName());
-		if(!name.equalsIgnoreCase(getWarpName())) {
-			return true;
-		}
-		return false;
-	}
-	
-	public Warps getWarp(String name) {
-		if(name.equalsIgnoreCase(this.warpName)) {
-			return this;
-		}
-		return null;
 	}
 	
 }

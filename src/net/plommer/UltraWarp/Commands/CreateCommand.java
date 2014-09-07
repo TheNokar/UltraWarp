@@ -28,7 +28,7 @@ public class CreateCommand extends BaseCommand {
 					isPublic = false;
 				}
 			}
-			plugin.warps.put(args.get(0), new Warps(player.getUniqueId(), args.get(0), loc, l.getWorld().getName(), isPublic));
+			plugin.db.addTo(new Warps(player.getUniqueId(), args.get(0), loc, l.getWorld().getName(), isPublic));
 			Utils.sendMessage(sender, "&aYou have successfully create warp " + args.get(0));
 		}
 		return false;
