@@ -1,0 +1,8 @@
+name: UltraWarp
+version: 0.0.1
+main: net.plommer.UltraWarp.UltraWarp
+author: [TheNokar]
+commands:
+    warp:
+        description: Default Warps command!
+        aliases: [w, wa]
