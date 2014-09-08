@@ -1,5 +1,7 @@
 package net.plommer.UltraWarp.MySQL;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,6 +13,7 @@ import java.util.UUID;
 
 import net.plommer.UltraWarp.UltraWarp;
 import net.plommer.UltraWarp.Warps;
+import net.plommer.UltraWarp.Configs.LoadConfig;
 
 public class DatabaseConnection {
 	private UltraWarp plugin;
@@ -26,8 +29,22 @@ public class DatabaseConnection {
 	
 	private Connection db() {
 		try {
-			return DriverManager.getConnection("jdbc:mysql://" + plugin.config.getString("mysql.host") + ":" + Integer.toString(plugin.config.getInt("mysql.port")) + "/" + plugin.config.getString("mysql.database") + "?autoReconnect=true&user=" + plugin.config.getString("mysql.username") + "&password=" + plugin.config.getString("mysql.password"));
-		} catch (SQLException ex) {
+			if(LoadConfig.use_mysql == true) {
+				return DriverManager.getConnection("jdbc:mysql://" + LoadConfig.mysql_host + ":" + LoadConfig.mysql_port + "/" + LoadConfig.mysql_database + "?autoReconnect=true&user=" + LoadConfig.mysql_username + "&password=" + LoadConfig.mysql_password);
+			} else {
+			    Class.forName("org.sqlite.JDBC");
+			    File file = new File(plugin.getDataFolder().getAbsoluteFile() + "/warps.db");
+			    if(!file.exists()) {
+			    	try {
+						file.createNewFile();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			    }
+				return DriverManager.getConnection("jdbc:sqlite:"+file.getAbsolutePath());
+			}
+		} catch (SQLException | ClassNotFoundException ex) {
 			ex.printStackTrace();
 			plugin.getServer().getPluginManager().disablePlugin(plugin);
 		}
@@ -129,7 +146,7 @@ public class DatabaseConnection {
 	}
 	
 	private String getSQLTables(String table) {
-		Scanner scan = new Scanner(UltraWarp.class.getResourceAsStream("/databases/" + table));
+		Scanner scan = new Scanner(plugin.getResource(table));
 		StringBuilder builder = new StringBuilder();
 		while(scan.hasNextLine()) {
 			builder.append(scan.nextLine());

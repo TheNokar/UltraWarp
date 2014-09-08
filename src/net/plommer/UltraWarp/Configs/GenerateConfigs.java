@@ -1,4 +1,4 @@
-package net.plommer.UltraWarp;
+package net.plommer.UltraWarp.Configs;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,19 +7,21 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 
+import net.plommer.UltraWarp.UltraWarp;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class GenerateConfigs {
-	protected UltraWarp plugin;
+	protected static UltraWarp plugin;
 	public GenerateConfigs(UltraWarp plugin) {
-		this.plugin = plugin;
+		GenerateConfigs.plugin = plugin;
 	}
 	
-	private FileConfiguration customConfig = null;
-	private File customConfigFile = null;
+	private static FileConfiguration customConfig = null;
+	private static File customConfigFile = null;
 	
-	public void reloadCustomConfig() {
+	public static void reloadCustomConfig() {
 	    if (customConfigFile == null) {
 	    customConfigFile = new File(plugin.getDataFolder(), "config.yml");
 	    }
@@ -40,7 +42,7 @@ public class GenerateConfigs {
 	    }
 	}
 	
-	public FileConfiguration getCustomConfig() {
+	public static FileConfiguration getCustomConfig() {
 	    if (customConfig == null) {
 	        reloadCustomConfig();
 	    }
@@ -58,7 +60,7 @@ public class GenerateConfigs {
 	    }
 	}
 	
-	public void saveDefaultConfig() {
+	public static void saveDefaultConfig() {
 	    if (customConfigFile == null) {
 	        customConfigFile = new File(plugin.getDataFolder(), "config.yml");
 	    }
