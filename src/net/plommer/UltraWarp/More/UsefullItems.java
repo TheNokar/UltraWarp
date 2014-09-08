@@ -1,6 +1,6 @@
 package net.plommer.UltraWarp.More;
 
-import net.plommer.UltraWarp.Utils;
+import net.plommer.UltraWarp.Configs.LoadConfig;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,7 +12,7 @@ public class UsefullItems {
 	public static ItemStack WarpCompass() {
 		ItemStack item = new ItemStack(Material.COMPASS, 1);
 		ItemMeta im = item.getItemMeta();
-		im.setDisplayName(Utils.buildString("&6&lMy Warps"));
+		im.setDisplayName(LoadConfig.compass_name);
 		item.setItemMeta(im);
 		return item;
 	}

@@ -37,12 +37,12 @@ public class UltraWarp extends JavaPlugin {
 		}
 		if(LoadConfig.use_mysql == false) {
 			try {
-				this.getLogger().info("Downloading SqlLite...");
 				File file = new File(this.getDataFolder().getAbsolutePath() + "/lib/spring-jdbc.jar");
 				if(!file.exists()) {
+					this.getLogger().info("Downloading SqlLite...");
 					new UrlDownload("http://central.maven.org/maven2/org/xerial/sqlite-jdbc/3.8.5-pre1/sqlite-jdbc-3.8.5-pre1.jar", this, "/lib/spring-jdbc.jar");
 				}
-				URLClassLoader.newInstance(new URL[] {file.toURI().toURL()});
+				URLClassLoader.newInstance(new URL[] {file.toURI().toURL()}, this.getClass().getClassLoader());
 		      } catch (MalformedURLException e) {
 		         return;
 		      }

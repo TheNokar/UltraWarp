@@ -5,3 +5,5 @@ mysql:
     database: UltraWarp
     username: root
     password: root
+plugin:
+    compass_name: &e&lWarps list
