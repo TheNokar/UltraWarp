@@ -1,7 +1,0 @@
-mysql:
-    use: false
-    host: localhost
-    port: 3306
-    database: UltraWarp
-    username: root
-    password: root
