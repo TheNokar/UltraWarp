@@ -83,7 +83,7 @@ public class IconMenu implements Listener {
     }
     
     public interface OptionClickEventHandler {
-        public void onOptionClick(OptionClickEvent event);       
+        public boolean onOptionClick(OptionClickEvent event);       
     }
     
     public class OptionClickEvent {

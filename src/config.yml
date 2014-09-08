@@ -6,4 +6,4 @@ mysql:
     username: root
     password: root
 plugin:
-    compass_name: &e&lWarps list
+    compass_name: '&e&lWarps list'
