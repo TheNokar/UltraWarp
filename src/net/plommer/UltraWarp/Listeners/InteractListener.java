@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import net.plommer.UltraWarp.IconMenu;
 import net.plommer.UltraWarp.UltraWarp;
+import net.plommer.UltraWarp.Utils;
 import net.plommer.UltraWarp.Warps;
 import net.plommer.UltraWarp.More.UsefullItems;
 import net.plommer.UltraWarp.More.WarpPlayer;
@@ -35,7 +36,7 @@ public class InteractListener implements Listener {
 				page = 1;
 				new getWarps(plugin);
 				HashMap<Integer, ArrayList<Warps>> wa = getWarps.getWarItemPos(player);
-    			createMenu(player, "My Warps", wa, 1);
+    			createMenu(player, Utils.buildString("&bMy Warps"), wa, 1);
 			}
 		}
 	}
@@ -47,14 +48,14 @@ public class InteractListener implements Listener {
             	if(event.getName().equalsIgnoreCase("next")) {
             		if(wa.containsKey(page+1)) {
             			page++;
-            			createMenu(player, "My Warps", wa, page);
+            			createMenu(player, Utils.buildString("&bMy Warps"), wa, page);
             		}
             		event.setWillClose(false);
             		event.setWillDestroy(true);
             	} else if(event.getName().equalsIgnoreCase("back")) {
             		if(wa.containsKey(page-1)) {
             			page--;
-            			createMenu(player, "My Warps", wa, page);
+            			createMenu(player, Utils.buildString("&bMy Warps"), wa, page);
             		}
             		event.setWillClose(false);
             		event.setWillDestroy(true);
@@ -75,18 +76,19 @@ public class InteractListener implements Listener {
 	public void setMenu(IconMenu menu, Warps w, int pos, Material mat) {
 		String v;
 		if(!w.isPublic()) {
-			v = ChatColor.RED + "Private";
+			v = Utils.buildString("&cPrivate");
 		} else {
-			v = ChatColor.GREEN + "Public";
+			v = Utils.buildString("&aPublic");
 		}
-		menu.setOption(pos, new ItemStack(mat, 1), w.getWarpName(), new String[] {ChatColor.AQUA + "Location: " + ChatColor.YELLOW + (int)w.getLocation()[0] + ", " + (int)w.getLocation()[1] + ", " + (int)w.getLocation()[3], ChatColor.AQUA + "Status: " + v});
+		menu.setOption(pos, new ItemStack(mat, 1), w.getWarpName(), new String[] {Utils.buildString("&bLocation: &e" + (int)w.getLocation()[0] + ", " + (int)w.getLocation()[1] + ", " + (int)w.getLocation()[3]), Utils.buildString("&bStatus: ") + v});
 	}
 	
 	public void createMenu(Player player, String name, HashMap<Integer, ArrayList<Warps>> wa, int page) {	
 		IconMenu menu = this.menus(player, name, wa);
 		menu = menus(player, name, wa);
-    	menu.setOption(18, new ItemStack(Material.ARROW, 1), ChatColor.RED + "Back");
-	    menu.setOption(26, new ItemStack(Material.ARROW, 1), ChatColor.GREEN + "Next");
+    	menu.setOption(18, new ItemStack(Material.ARROW, 1), Utils.buildString("&cBack"));
+	    menu.setOption(26, new ItemStack(Material.ARROW, 1), Utils.buildString("&aNext"));
+	    menu.setOption(22, new ItemStack(Material.DIAMOND_BLOCK, 1), Utils.buildString("&eCreate Warp"), new String[] {Utils.buildString("&eCreate new warp"), Utils.buildString("&eat player poisition")});
 		int pos = 0;
 		for(Warps w : wa.get(page)) {
 			setMenu(menu, w, pos, Material.PAPER);
