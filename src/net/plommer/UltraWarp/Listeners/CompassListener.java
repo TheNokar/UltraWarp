@@ -37,11 +37,13 @@ public class CompassListener implements Listener {
 	public void interActEvent(PlayerInteractEvent event) {
 		if(event.getAction().equals(Action.PHYSICAL) || event.getAction().equals(Action.RIGHT_CLICK_AIR)  || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			final Player player = event.getPlayer();
-			if(event.getItem().getItemMeta().equals(UsefullItems.WarpCompass().getItemMeta())) {
-				page = 1;
-				new getWarps(plugin);
-				HashMap<Integer, ArrayList<Warps>> wa = getWarps.getWarItemPos(player);
-    			createMenu(player, Utils.buildString("&6&lMy Warps"), wa, 1);
+			if(event.getItem() != null || event.getItem().getType() != Material.AIR) {
+				if(event.getItem().getItemMeta().equals(UsefullItems.WarpCompass().getItemMeta())) {
+					page = 1;
+					new getWarps(plugin);
+					HashMap<Integer, ArrayList<Warps>> wa = getWarps.getWarItemPos(player);
+	    			createMenu(player, Utils.buildString("&6&lMy Warps"), wa, 1);
+				}
 			}
 		}
 	}
@@ -82,7 +84,9 @@ public class CompassListener implements Listener {
 	
 	@EventHandler
 	public void playerRespawn(PlayerRespawnEvent event) {
-		UsefullItems.addWarpCompass(event.getPlayer(), 8);
+		if(LoadConfig.sticky_compass == true) {
+			UsefullItems.addWarpCompass(event.getPlayer(), LoadConfig.compass_slot);
+		}
 	}
 	
 	public IconMenu menus(final Player player, final String name, final HashMap<Integer, ArrayList<Warps>> wa) {
@@ -90,14 +94,15 @@ public class CompassListener implements Listener {
             @Override
             public boolean onOptionClick(IconMenu.OptionClickEvent event) {
             	if(Utils.removeChar(event.getName()).equalsIgnoreCase("next")) {
+            		event.setha(true);
             		if(wa.containsKey(page+1)) {
             			page++;
             			createMenu(player, Utils.buildString("&6&lMy Warps"), wa, page);
             		}
             		event.setWillClose(false);
             		event.setWillDestroy(true);
-            	event.setWillDestroy(true);
-            		} else if(Utils.removeChar(event.getName()).equalsIgnoreCase("back")) {
+            	} else if(Utils.removeChar(event.getName()).equalsIgnoreCase("back")) {
+            		event.setha(true);
             		if(wa.containsKey(page-1)) {
             			page--;
             			createMenu(player, Utils.buildString("&6&lMy Warps"), wa, page);
@@ -106,9 +111,11 @@ public class CompassListener implements Listener {
             		event.setWillDestroy(true);
             	} else {
             		WarpPlayer.playerTo(event.getName(), player, plugin);
+            		event.setWillDestroy(true);
             		event.setWillClose(true);
             		return false;
             	}
+            	event.setha(false);
             	event.setWillClose(false);
             	event.setWillDestroy(true);
             	return false;

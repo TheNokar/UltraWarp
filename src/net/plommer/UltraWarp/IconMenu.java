@@ -21,7 +21,8 @@ public class IconMenu implements Listener {
     private int size;
     private OptionClickEventHandler handler;
     private Plugin plugin;
-   
+    private boolean ha = true;
+    
     private String[] optionNames;
     private ItemStack[] optionIcons;
    
@@ -63,13 +64,6 @@ public class IconMenu implements Listener {
     	optionNames = new String[optionNames.length];
     	optionIcons = new ItemStack[optionIcons.length];
     }
-   
-    @EventHandler(priority=EventPriority.MONITOR)
-    public void onInventoryClose(InventoryCloseEvent event) {
-	    if (event.getInventory().getTitle().equals(name)) {
-	    	destroy();
-	    }
-    }
     
     @EventHandler(priority=EventPriority.MONITOR)
     void onInventoryClick(InventoryClickEvent event) {
@@ -80,6 +74,12 @@ public class IconMenu implements Listener {
                 Plugin plugin = this.plugin;
                 OptionClickEvent e = new OptionClickEvent((Player)event.getWhoClicked(), slot, optionNames[slot]);
                 handler.onOptionClick(e);
+                ha = false;
+                if(e.ha()) {
+                	ha = true;
+                } else {
+                	ha = false;
+                }
                 if (e.willClose()) {
                     final Player p = (Player)event.getWhoClicked();
                     Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -95,6 +95,13 @@ public class IconMenu implements Listener {
         }
     }
     
+    @EventHandler
+    public void InventoryClose(InventoryCloseEvent event) {
+    	if(event.getInventory().getTitle().equals(name) && ha == false) {
+    		destroy();
+    	}
+    }
+    
     public interface OptionClickEventHandler {
         public boolean onOptionClick(OptionClickEvent event);       
     }
@@ -105,13 +112,15 @@ public class IconMenu implements Listener {
         private String name;
         private boolean close;
         private boolean destroy;
-       
+        private boolean hab = false;
+        
         public OptionClickEvent(Player player, int position, String name) {
             this.player = player;
             this.position = position;
             this.name = name;
             this.close = true;
             this.destroy = false;
+            this.hab = false;
         }
        
         public Player getPlayer() {
@@ -138,6 +147,14 @@ public class IconMenu implements Listener {
             this.close = close;
         }
        
+        public boolean ha() {
+            return hab;
+        }
+       
+        public void setha(boolean close) {
+            this.hab = close;
+        }
+        
         public void setWillDestroy(boolean destroy) {
             this.destroy = destroy;
         }
