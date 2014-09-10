@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.plommer.UltraWarp.UltraWarp;
 import net.plommer.UltraWarp.Utils;
+import net.plommer.UltraWarp.Configs.LoadConfig;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -69,7 +70,7 @@ public abstract class BaseCommand {
 	}
 	
 	public String permission() {
-		return "ultrawarps." + this.permission;
+		return LoadConfig.permission_node + this.permission;
 	}
 	
 }

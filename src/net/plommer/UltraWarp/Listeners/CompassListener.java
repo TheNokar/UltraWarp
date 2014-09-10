@@ -93,31 +93,22 @@ public class CompassListener implements Listener {
 		return new IconMenu(ChatColor.GOLD + name, 27, new IconMenu.OptionClickEventHandler() {
             @Override
             public boolean onOptionClick(IconMenu.OptionClickEvent event) {
-            	if(Utils.removeChar(event.getName()).equalsIgnoreCase("next")) {
-            		event.setha(true);
-            		if(wa.containsKey(page+1)) {
-            			page++;
-            			createMenu(player, Utils.buildString("&6&lMy Warps"), wa, page);
-            		}
-            		event.setWillClose(false);
+            	event.setWillDestroy(true);
+            	if(Utils.removeChar(event.getName()).equalsIgnoreCase("next") && wa.containsKey(page+1)) {
             		event.setWillDestroy(true);
-            	} else if(Utils.removeChar(event.getName()).equalsIgnoreCase("back")) {
-            		event.setha(true);
-            		if(wa.containsKey(page-1)) {
-            			page--;
-            			createMenu(player, Utils.buildString("&6&lMy Warps"), wa, page);
-            		}
+            		page++;
+            		createMenu(player, Utils.buildString("&6&lMy Warps"), wa, page);
             		event.setWillClose(false);
+            	} else if(Utils.removeChar(event.getName()).equalsIgnoreCase("back") && wa.containsKey(page-1)) {
             		event.setWillDestroy(true);
+            		page--;
+            		createMenu(player, Utils.buildString("&6&lMy Warps"), wa, page);
+            		event.setWillClose(false);
             	} else {
             		WarpPlayer.playerTo(event.getName(), player, plugin);
-            		event.setWillDestroy(true);
             		event.setWillClose(true);
             		return false;
             	}
-            	event.setha(false);
-            	event.setWillClose(false);
-            	event.setWillDestroy(true);
             	return false;
             }
         }, plugin);
@@ -135,6 +126,8 @@ public class CompassListener implements Listener {
 	
 	public void createMenu(Player player, String name, HashMap<Integer, ArrayList<Warps>> wa, int page) {	
 		IconMenu menu = this.menus(player, name, wa);
+		menu.clear();
+		menu.destroy();
 		menu = menus(player, name, wa);
 		menu.setOption(26, new ItemStack(Material.ARROW, 1), Utils.buildString("&aNext"));
 	    menu.setOption(18, new ItemStack(Material.ARROW, 1), Utils.buildString("&cBack"));

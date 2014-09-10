@@ -1,5 +1,7 @@
 package net.plommer.UltraWarp.Commands;
 
+import org.bukkit.entity.Player;
+
 import net.plommer.UltraWarp.More.WarpPlayer;
 
 public class WarpCommand extends BaseCommand {
@@ -15,7 +17,8 @@ public class WarpCommand extends BaseCommand {
 	@Override
 	public boolean execute() {
 		// TODO Auto-generated method stub
-		WarpPlayer.playerTo(args.get(0), player, plugin);
+		player = (Player)sender;
+		if(WarpPlayer.playerTo(args.get(0), player, plugin));
 		return false;
 	}
 

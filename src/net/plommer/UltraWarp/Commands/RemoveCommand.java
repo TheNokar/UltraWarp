@@ -17,7 +17,7 @@ public class RemoveCommand extends BaseCommand {
 	public boolean execute() {
 		Warps w = plugin.db.checkWarp(args.get(0));
 		if(w != null) {
-			if(w.getPlayerUUID() == player.getUniqueId() || player.hasPermission(permission() + "admin")) {
+			if(w.getPlayerUUID().equals(player.getUniqueId()) || player.hasPermission(permission() + "admin")) {
 				if(plugin.db.removeWarps(w)) {
 					Utils.sendMessage(sender, "&a" + w.getWarpName() + " &eHas been deleted!");
 				} else {
