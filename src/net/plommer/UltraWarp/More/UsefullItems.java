@@ -17,9 +17,13 @@ public class UsefullItems {
 		return item;
 	}
 
-	public static void addWarpCompass(Player player) {
+	public static void addWarpCompass(Player player, int pos) {
 		if(!player.getInventory().contains(WarpCompass())) {
-			player.getInventory().addItem(WarpCompass());
+			if(player.getInventory().getItem(8) != null) {
+				ItemStack a = player.getInventory().getItem(8);
+				player.getInventory().addItem(a);
+			}
+			player.getInventory().setItem(pos, WarpCompass());
 		}
 	}
 	

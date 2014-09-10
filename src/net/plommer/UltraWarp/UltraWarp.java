@@ -10,7 +10,7 @@ import java.util.HashMap;
 import net.plommer.UltraWarp.Commands.*;
 import net.plommer.UltraWarp.Configs.GenerateConfigs;
 import net.plommer.UltraWarp.Configs.LoadConfig;
-import net.plommer.UltraWarp.Listeners.InteractListener;
+import net.plommer.UltraWarp.Listeners.CompassListener;
 import net.plommer.UltraWarp.More.UrlDownload;
 import net.plommer.UltraWarp.More.UsefullItems;
 import net.plommer.UltraWarp.MySQL.DatabaseConnection;
@@ -31,9 +31,9 @@ public class UltraWarp extends JavaPlugin {
 	public void onEnable() {
 		config = GenerateConfigs.getCustomConfig();
 		registerCommands();		
-		getServer().getPluginManager().registerEvents(new InteractListener(this), this);
+		getServer().getPluginManager().registerEvents(new CompassListener(this), this);
 		for(Player p : Bukkit.getOnlinePlayers()) {
-			UsefullItems.addWarpCompass(p);
+			UsefullItems.addWarpCompass(p, LoadConfig.compass_slot);
 		}
 		if(LoadConfig.use_mysql == false) {
 			try {
@@ -57,6 +57,8 @@ public class UltraWarp extends JavaPlugin {
 	public void registerCommands() {
 		getCommand("warp").setExecutor(new CommandHandler(this));
 		commands.add(new CreateCommand());
+		commands.add(new RemoveCommand());
+		commands.add(new ModifyCommand());
 		commands.add(new WarpCommand()); // <-- This has to bee on the bottom
 	}
 	

@@ -16,9 +16,12 @@ public class getWarps {
 	
 	public static HashMap<Integer, ArrayList<Warps>> getWarItemPos(Player player) {
 		HashMap<Integer, ArrayList<Warps>> wa = new HashMap<Integer, ArrayList<Warps>>();
+		wa.clear();
 		ArrayList<Warps> wap = new ArrayList<Warps>();
+		wap.clear();
 		int i = 0, page = 0, p = 0;
 		for(Warps w : plugin.db.checkWarpByUUID(player.getUniqueId())) {
+			wap.add(w);
 			if(i > 17 || p == plugin.db.checkWarpByUUID(player.getUniqueId()).size()-1) {
 				page++;
 				ArrayList<Warps> test = new ArrayList<Warps>();
@@ -27,7 +30,6 @@ public class getWarps {
 				wap.clear();
 				i = 0;
 			}
-			wap.add(w);
 			i++; p++;
 		}
 		return wa;

@@ -10,10 +10,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 /**
- * Common methods shared between modules
+ * Utils methods
  *
  * @author Gussi
  */
@@ -22,6 +23,13 @@ public class Utils {
 
 	public static void sendMessage(CommandSender sender, String message) {
 		Utils.sendMessage(sender, message, new HashMap<String,String>());
+	}
+	
+	public static void sendMessageList(CommandSender sender, String[] message) {
+		for(int i = 0; i < message.length; i++) {
+			String s = message[i];
+			Utils.sendMessage(sender, s, new HashMap<String,String>());
+		}
 	}
 
 	public static void sendMessage(CommandSender sender, String message, HashMap<String, String> tokens) {
@@ -70,5 +78,9 @@ public class Utils {
 			// TODO Auto-generated catch block
 		}
 		return a.replaceAll("&", new Character((char) 167).toString());
+	}
+	
+	public static String removeChar(String message) {
+		return ChatColor.stripColor(message).toString();
 	}
 }

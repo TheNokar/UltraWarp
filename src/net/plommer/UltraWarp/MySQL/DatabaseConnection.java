@@ -80,6 +80,55 @@ public class DatabaseConnection {
 		return false;
 	}
 	
+	public boolean updateWarp(Warps w) {
+		PreparedStatement ps = null;
+		try {
+			ps = this.db().prepareStatement("UPDATE `ultrawarp` SET X = (?), Y = (?), Z = (?), YAW = (?), PITCH = (?), world = (?), public = (?) WHERE warpName = (?)");
+			ps.setFloat(1, (float) w.getLocation()[0]);
+			ps.setFloat(2, (float) w.getLocation()[1]);
+			ps.setFloat(3, (float) w.getLocation()[2]);
+			ps.setFloat(4, (float) w.getLocation()[3]);
+			ps.setFloat(5, (float) w.getLocation()[4]);
+			ps.setString(6, w.getWorld());
+			ps.setBoolean(7, w.isPublic());
+			ps.setString(8, w.getWarpName());
+			return ps.executeUpdate() != 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(ps != null) {
+					ps.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	public boolean removeWarps(Warps w) {
+		PreparedStatement ps = null;
+		try {
+			ps = this.db().prepareStatement("DELETE FROM `ultrawarp` WHERE warpName = (?)");
+			ps.setString(1, w.getWarpName());
+			return ps.executeUpdate() != 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(ps != null) {
+					ps.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
 	public Warps checkWarp(String name) {
 		PreparedStatement ps = null;
 		try {

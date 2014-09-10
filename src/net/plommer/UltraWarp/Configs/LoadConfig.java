@@ -14,5 +14,8 @@ public class LoadConfig {
 	public static String mysql_host = config.getString("mysql.host");
 	public static int mysql_port = config.getInt("mysql.port");
 	public static String compass_name = Utils.buildString(config.getString("plugin.compass_name"));
-	
+	public static boolean public_by_default = config.getBoolean("plugin.public_by_default");
+	public static boolean use_compass = config.getBoolean("plugin.use_compass");
+	public static boolean sticky_compass = config.getBoolean("plugin.sticky_compass");
+	public static int compass_slot = config.getInt("plugin.compass_slot");
 }

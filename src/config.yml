@@ -2,8 +2,12 @@ mysql:
     use: false
     host: localhost
     port: 3306
-    database: UltraWarp
+    database: minecraft
     username: root
     password: root
 plugin:
+    use_compass: true
+    compass_slot: 8
+    sticky_compass: true
     compass_name: '&e&lWarps list'
+    public_by_default: true
