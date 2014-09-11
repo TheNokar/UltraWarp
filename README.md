@@ -30,3 +30,8 @@ ultrawarp.admin - By pass all things were player has to own the warp.
 
     Children: 
     ultrawarp.user
+
+Download
+=========
+Too lazy to compress it your self? Well i have put up a Jenkins page that contains all the newest version of UltraWarp
+http://ci.plommer.net/job/UltraWarp/
