@@ -12,6 +12,7 @@ import net.plommer.UltraWarp.More.UsefullItems;
 import net.plommer.UltraWarp.More.WarpPlayer;
 import net.plommer.UltraWarp.More.getWarps;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,6 +23,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -37,12 +39,13 @@ public class CompassListener implements Listener {
 	public void interActEvent(PlayerInteractEvent event) {
 		if(event.getAction().equals(Action.PHYSICAL) || event.getAction().equals(Action.RIGHT_CLICK_AIR)  || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			final Player player = event.getPlayer();
-			if(event.getItem() != null || event.getItem().getType() != Material.AIR) {
-				if(event.getItem().getItemMeta().equals(UsefullItems.WarpCompass().getItemMeta())) {
+			if(player.getItemInHand().getType() == Material.COMPASS) {
+				if(player.getItemInHand().getItemMeta().equals(UsefullItems.WarpCompass().getItemMeta())) {
 					page = 1;
 					new getWarps(plugin);
 					HashMap<Integer, ArrayList<Warps>> wa = getWarps.getWarItemPos(player);
-	    			createMenu(player, Utils.buildString("&6&lMy Warps"), wa, 1);
+	    			createMenu(player, Utils.buildString(LoadConfig.inventory_name), wa, 1);
+	    			event.setCancelled(true);
 				}
 			}
 		}
@@ -84,32 +87,48 @@ public class CompassListener implements Listener {
 	
 	@EventHandler
 	public void playerRespawn(PlayerRespawnEvent event) {
-		if(LoadConfig.sticky_compass == true) {
+		if(LoadConfig.sticky_compass) {
+			UsefullItems.addWarpCompass(event.getPlayer(), LoadConfig.compass_slot);
+		}
+	}
+	
+	@EventHandler
+	public void playerJoinEvent(PlayerJoinEvent event) {
+		if(LoadConfig.sticky_compass) {
 			UsefullItems.addWarpCompass(event.getPlayer(), LoadConfig.compass_slot);
 		}
 	}
 	
 	public IconMenu menus(final Player player, final String name, final HashMap<Integer, ArrayList<Warps>> wa) {
-		return new IconMenu(ChatColor.GOLD + name, 27, new IconMenu.OptionClickEventHandler() {
+		return new IconMenu(ChatColor.GOLD + name, 27+9, new IconMenu.OptionClickEventHandler() {
             @Override
-            public boolean onOptionClick(IconMenu.OptionClickEvent event) {
-            	event.setWillDestroy(true);
-            	if(Utils.removeChar(event.getName()).equalsIgnoreCase("next") && wa.containsKey(page+1)) {
-            		event.setWillDestroy(true);
-            		page++;
-            		createMenu(player, Utils.buildString("&6&lMy Warps"), wa, page);
-            		event.setWillClose(false);
-            	} else if(Utils.removeChar(event.getName()).equalsIgnoreCase("back") && wa.containsKey(page-1)) {
-            		event.setWillDestroy(true);
-            		page--;
-            		createMenu(player, Utils.buildString("&6&lMy Warps"), wa, page);
-            		event.setWillClose(false);
+            public void onOptionClick(IconMenu.OptionClickEvent event) {
+            	if(Utils.removeChar(event.getName()).equalsIgnoreCase("next")) {
+            		if(wa.containsKey(page+1)) {
+	            		page++;
+	            		event.setWillDestroy(true);
+	            		event.setWillClose(true);
+	            		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	                        public void run() {
+	    	            		createMenu(player, Utils.buildString(LoadConfig.inventory_name), wa, page);
+	                        }
+	                    }, 0);
+            		}
+            	} else if(Utils.removeChar(event.getName()).equalsIgnoreCase("back")) {
+            		if(wa.containsKey(page-1)) {
+	            		page--;
+	            		event.setWillDestroy(true);
+	            		event.setWillClose(true);
+	            		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	                        public void run() {
+	    	            		createMenu(player, Utils.buildString(LoadConfig.inventory_name), wa, page);
+	                        }
+	                    }, 0);
+            		}
             	} else {
             		WarpPlayer.playerTo(event.getName(), player, plugin);
             		event.setWillClose(true);
-            		return false;
             	}
-            	return false;
             }
         }, plugin);
 	}
@@ -126,11 +145,12 @@ public class CompassListener implements Listener {
 	
 	public void createMenu(Player player, String name, HashMap<Integer, ArrayList<Warps>> wa, int page) {	
 		IconMenu menu = this.menus(player, name, wa);
-		menu.clear();
-		menu.destroy();
-		menu = menus(player, name, wa);
-		menu.setOption(26, new ItemStack(Material.ARROW, 1), Utils.buildString("&aNext"));
-	    menu.setOption(18, new ItemStack(Material.ARROW, 1), Utils.buildString("&cBack"));
+		if(wa.containsKey(page+1)) {
+			menu.setOption(26+9, new ItemStack(Material.ARROW, 1), Utils.buildString("&aNext"));
+		}
+		if(wa.containsKey(page-1)) {
+			menu.setOption(18+9, new ItemStack(Material.ARROW, 1), Utils.buildString("&cBack"));
+		}
 	    int pos = 0;
 		for(Warps w : wa.get(page)) {
 			setMenu(menu, w, pos, Material.PAPER);

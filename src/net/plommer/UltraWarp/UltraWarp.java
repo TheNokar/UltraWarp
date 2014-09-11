@@ -57,6 +57,7 @@ public class UltraWarp extends JavaPlugin {
 	public void registerCommands() {
 		getCommand("warp").setExecutor(new CommandHandler(this));
 		commands.add(new CreateCommand());
+		commands.add(new ListCommand());
 		commands.add(new RemoveCommand());
 		commands.add(new ModifyCommand());
 		commands.add(new WarpCommand()); // <-- This has to bee on the bottom

@@ -13,19 +13,12 @@ permissions:
         description: Give access to all UltraWarps permissions!
         default: op
         children:
-          ultrawarp.warp: true
-          ultrawarp.warp.create: true
-          ultrawarp.warp.remove: true
-          ultrawarp.warp.modify: true
-          ultrawarp.warp.admin: true
+          ultrawarp.admin: true
     ultrawarp.admin:
         description: Give admin access
         default: op
         children:
-          ultrawarp.warp: true
-          ultrawarp.warp.create: true
-          ultrawarp.warp.remove: true
-          ultrawarp.warp.modify: true
+          ultrawarp.use: true
     ultrawarp.user:
         description: Give user all norma permissions(Warp, Warp create, Warp modify, Warp remove)
         default: op
@@ -34,6 +27,7 @@ permissions:
           ultrawarp.warp.create: true
           ultrawarp.warp.remove: true
           ultrawarp.warp.modify: true
+          ultrawarp.list: true
     ultrawarp.warp:
         description: Allows you to warp
         default: true
@@ -42,4 +36,7 @@ permissions:
         default: true
     ultrawarp.warp.remove:
         description: Allows you to remove warp
+        default: true
+    ultrawarp.warp.list:
+        description: Allows you to see a list of your warps!
         default: true

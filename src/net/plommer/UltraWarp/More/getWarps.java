@@ -22,7 +22,7 @@ public class getWarps {
 		int i = 0, page = 0, p = 0;
 		for(Warps w : plugin.db.checkWarpByUUID(player.getUniqueId())) {
 			wap.add(w);
-			if(i > 16 || p == plugin.db.checkWarpByUUID(player.getUniqueId()).size()-1) {
+			if(i > 16+9 || p == plugin.db.checkWarpByUUID(player.getUniqueId()).size()-1) {
 				page++;
 				ArrayList<Warps> test = new ArrayList<Warps>();
 				test.addAll(wap);

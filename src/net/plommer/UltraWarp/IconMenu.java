@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -19,8 +20,9 @@ public class IconMenu implements Listener {
     private String name;
     private int size;
     private OptionClickEventHandler handler;
-    private Plugin plugin;
-    
+    @SuppressWarnings("unused")
+	private Plugin plugin;
+   
     private String[] optionNames;
     private ItemStack[] optionIcons;
    
@@ -57,35 +59,24 @@ public class IconMenu implements Listener {
         optionNames = null;
         optionIcons = null;
     }
-    
-    public void clear() {
-    	optionNames = new String[optionNames.length];
-    	optionIcons = new ItemStack[optionIcons.length];
+   
+    @EventHandler(priority=EventPriority.MONITOR)
+    void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getInventory().getTitle().equals(name)) {
+        	destroy();
+        }
     }
-    
-    /*@EventHandler
-    public void InventoryClose(InventoryCloseEvent event) {
-    	if(event.getInventory().getTitle().equals(name) && ha == false) {
-    		destroy();
-    	}
-    }*/
-    
     @EventHandler(priority=EventPriority.MONITOR)
     void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getTitle().equals(name)) {
             event.setCancelled(true);
             int slot = event.getRawSlot();
             if (slot >= 0 && slot < size && optionNames[slot] != null) {
-                Plugin plugin = this.plugin;
                 OptionClickEvent e = new OptionClickEvent((Player)event.getWhoClicked(), slot, optionNames[slot]);
                 handler.onOptionClick(e);
                 if (e.willClose()) {
                     final Player p = (Player)event.getWhoClicked();
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                        public void run() {
-                            p.closeInventory();
-                        }
-                    }, 1);
+                    p.closeInventory();
                 }
                 if (e.willDestroy()) {
                     destroy();
@@ -95,7 +86,7 @@ public class IconMenu implements Listener {
     }
     
     public interface OptionClickEventHandler {
-        public boolean onOptionClick(OptionClickEvent event);       
+        public void onOptionClick(OptionClickEvent event);       
     }
     
     public class OptionClickEvent {
@@ -104,7 +95,7 @@ public class IconMenu implements Listener {
         private String name;
         private boolean close;
         private boolean destroy;
-        
+       
         public OptionClickEvent(Player player, int position, String name) {
             this.player = player;
             this.position = position;
@@ -136,7 +127,7 @@ public class IconMenu implements Listener {
         public void setWillClose(boolean close) {
             this.close = close;
         }
-      
+       
         public void setWillDestroy(boolean destroy) {
             this.destroy = destroy;
         }

@@ -10,4 +10,5 @@ plugin:
     compass_slot: 8
     sticky_compass: true
     compass_name: '&e&lWarps list'
-    public_by_default: true
+    public_by_default: false
+    inventory_name: '&4&lYour warps'

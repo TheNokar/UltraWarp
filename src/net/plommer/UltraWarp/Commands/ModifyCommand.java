@@ -10,7 +10,7 @@ public class ModifyCommand extends BaseCommand {
 	public ModifyCommand() {
 		name = "modify:mod:change:c";
 		argLength = 1;
-		bePlayer = false;
+		bePlayer = true;
 		usage = "<Warp name> <What to do>";
 		permission = "warp.modify";
 	}
