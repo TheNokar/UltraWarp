@@ -1,7 +1,7 @@
 UltraWarp
 =========
 
-The ultimate bukkit warp plugin
+The new ultimate MySQL or SQLite bukkit warp plugin.
 
 Warp Compass
 =========
