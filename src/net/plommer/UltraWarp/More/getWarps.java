@@ -20,19 +20,21 @@ public class getWarps {
 		ArrayList<Warps> wap = new ArrayList<Warps>();
 		wap.clear();
 		int i = 0, page = 0, p = 0;
-		for(Warps w : plugin.db.checkWarpByUUID(player.getUniqueId())) {
-			wap.add(w);
-			if(i > 16+9 || p == plugin.db.checkWarpByUUID(player.getUniqueId()).size()-1) {
-				page++;
-				ArrayList<Warps> test = new ArrayList<Warps>();
-				test.addAll(wap);
-				wa.put(page, test);
-				wap.clear();
-				i = 0;
+		if(plugin.db.checkWarpByUUID(player.getUniqueId()) != null) {
+			for(Warps w : plugin.db.checkWarpByUUID(player.getUniqueId())) {
+				wap.add(w);
+				if(i > 16+9 || p == plugin.db.checkWarpByUUID(player.getUniqueId()).size()-1) {
+					page++;
+					ArrayList<Warps> test = new ArrayList<Warps>();
+					test.addAll(wap);
+					wa.put(page, test);
+					wap.clear();
+					i = 0;
+				}
+				i++; p++;
 			}
-			i++; p++;
 		}
-		return wa;
+		return null;
 	}
 	
 }

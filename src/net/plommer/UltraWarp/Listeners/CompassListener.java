@@ -145,16 +145,20 @@ public class CompassListener implements Listener {
 	
 	public void createMenu(Player player, String name, HashMap<Integer, ArrayList<Warps>> wa, int page) {	
 		IconMenu menu = this.menus(player, name, wa);
-		if(wa.containsKey(page+1)) {
-			menu.setOption(26+9, new ItemStack(Material.ARROW, 1), Utils.buildString("&aNext"));
-		}
-		if(wa.containsKey(page-1)) {
-			menu.setOption(18+9, new ItemStack(Material.ARROW, 1), Utils.buildString("&cBack"));
-		}
-	    int pos = 0;
-		for(Warps w : wa.get(page)) {
-			setMenu(menu, w, pos, Material.PAPER);
-			pos++;
+		if(wa != null) {
+			if(wa.containsKey(page+1)) {
+				menu.setOption(26+9, new ItemStack(Material.ARROW, 1), Utils.buildString("&aNext"));
+			}
+			if(wa.containsKey(page-1)) {
+				menu.setOption(18+9, new ItemStack(Material.ARROW, 1), Utils.buildString("&cBack"));
+			}
+		    int pos = 0;
+			for(Warps w : wa.get(page)) {
+				setMenu(menu, w, pos, Material.PAPER);
+				pos++;
+			}
+		} else {
+			menu.setOption(1, new ItemStack(Material.REDSTONE_BLOCK, 0), Utils.buildString("&cYou don't have any warps!"));
 		}
 		menu.open(player);
 	}

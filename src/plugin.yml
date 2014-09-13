@@ -30,13 +30,13 @@ permissions:
           ultrawarp.list: true
     ultrawarp.warp:
         description: Allows you to warp
-        default: true
+        default: op
     ultrawarp.warp.create:
         description: Allows you to create warp
-        default: true
+        default: op
     ultrawarp.warp.remove:
         description: Allows you to remove warp
-        default: true
+        default: op
     ultrawarp.warp.list:
         description: Allows you to see a list of your warps!
-        default: true
+        default: op
