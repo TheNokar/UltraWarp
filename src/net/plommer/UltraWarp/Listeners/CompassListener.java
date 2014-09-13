@@ -16,11 +16,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -51,12 +54,17 @@ public class CompassListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void playerInv(InventoryClickEvent event) {
+		Player player = (Player) event.getWhoClicked();
 		if(event.getSlot() == LoadConfig.compass_slot) {
-			if(event.getCurrentItem().getItemMeta().equals(UsefullItems.WarpCompass().getItemMeta())) {
-				if(LoadConfig.sticky_compass == true) {
-					event.setCancelled(true);
+			if(event.getCursor().getType() == Material.COMPASS || event.getCurrentItem().getType() == Material.COMPASS) {
+				if(event.getCursor().getItemMeta() != null && event.getCursor().getItemMeta().equals(UsefullItems.WarpCompass().getItemMeta()) || event.getCurrentItem().getItemMeta() != null && event.getCurrentItem().getItemMeta().equals(UsefullItems.WarpCompass().getItemMeta())) {
+					if(LoadConfig.sticky_compass == true) {
+						event.getCurrentItem().setType(Material.AIR);
+						UsefullItems.addWarpCompass(player, 8);
+						event.setCancelled(true);
+					}
 				}
 			}
 		}
