@@ -28,7 +28,7 @@ public class CreateCommand extends BaseCommand {
 			double[] loc = {l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch()};
 			boolean isPublic = LoadConfig.public_by_default;
 			if(args.size() > 1) {
-				if(LoadConfig.public_by_default == true) {
+				if(LoadConfig.public_by_default == true && !player.hasPermission(permission() + "public") || !player.hasPermission(permission() + "public")) {
 					if(args.get(1).equalsIgnoreCase("private") || args.get(1).equalsIgnoreCase("p")) {
 						Utils.sendMessage(sender, args.get(1));
 						isPublic = false;
