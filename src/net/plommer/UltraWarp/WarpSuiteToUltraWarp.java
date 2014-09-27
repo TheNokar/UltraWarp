@@ -12,7 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class WarpSuiteToUltraWarp {
 
 	public WarpSuiteToUltraWarp(UltraWarp plugin) {
-		File[] files = new File("plugins/WarpSuite/players").listFiles();
+		File[] files = new File(plugin.getDataFolder().getAbsolutePath() + "/../WarpSuite/players").listFiles();
 		for(File file : files) {
 			FileConfiguration config = new WarpSuiteConfig(file.getName(), plugin).getCustomConfig();
 			String name = file.getName().replace(".yml", "");

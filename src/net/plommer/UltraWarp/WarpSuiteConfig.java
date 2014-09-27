@@ -23,7 +23,7 @@ public class WarpSuiteConfig {
 	
 	public void reloadCustomConfig() {
 	    if (customConfigFile == null) {
-	    	customConfigFile = new File("plugins/WarpSuite/players/" + location);
+	    	customConfigFile = new File(plugin.getDataFolder().getAbsolutePath() + "/../WarpSuite/players/" + location);
 	    }
 	    customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
 	}
