@@ -12,3 +12,5 @@ plugin:
     compass_name: '&e&lWarps list'
     public_by_default: false
     inventory_name: '&4&lYour warps'
+    max_warps: 50
+    convert_warpsuite_to_ultrawarp: true

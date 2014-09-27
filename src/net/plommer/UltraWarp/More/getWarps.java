@@ -20,10 +20,10 @@ public class getWarps {
 		ArrayList<Warps> wap = new ArrayList<Warps>();
 		wap.clear();
 		int i = 0, page = 0, p = 0;
-		if(plugin.db.checkWarpByUUID(player.getUniqueId()) != null) {
-			for(Warps w : plugin.db.checkWarpByUUID(player.getUniqueId())) {
+		if(plugin.db.checkWarpByUUID(player.getUniqueId(), true).size() > 0) {
+			for(Warps w : plugin.db.checkWarpByUUID(player.getUniqueId(), true)) {
 				wap.add(w);
-				if(i > 16+9 || p == plugin.db.checkWarpByUUID(player.getUniqueId()).size()-1) {
+				if(i > 16+9 || p == plugin.db.checkWarpByUUID(player.getUniqueId(), true).size()-1) {
 					page++;
 					ArrayList<Warps> test = new ArrayList<Warps>();
 					test.addAll(wap);

@@ -18,7 +18,12 @@ public class WarpCommand extends BaseCommand {
 	public boolean execute() {
 		// TODO Auto-generated method stub
 		player = (Player)sender;
-		if(WarpPlayer.playerTo(args.get(0), player, plugin));
+		String ugh = null;
+		if(args.size() > 1) {
+			ugh = args.get(1);
+		}
+		System.out.print(ugh);
+		if(WarpPlayer.playerTo(args.get(0), player, plugin, ugh));
 		return false;
 	}
 

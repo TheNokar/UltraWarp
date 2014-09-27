@@ -20,7 +20,11 @@ public class DatabaseConnection {
 	public DatabaseConnection(UltraWarp plugin) {
 		this.plugin = plugin;
 		try {
-			this.db().prepareStatement(this.getSQLTables("warps.sql")).execute();
+			if(LoadConfig.use_mysql == true) {
+				this.db().prepareStatement(this.getSQLTables("warps.sql")).execute();
+			} else {
+				this.db().prepareStatement(this.getSQLTables("warpslite.sql")).execute();
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,8 +133,9 @@ public class DatabaseConnection {
 		return false;
 	}
 	
-	public Warps checkWarp(String name) {
+	public ArrayList<Warps> checkWarp(String name) {
 		PreparedStatement ps = null;
+		ArrayList<Warps> hah = new ArrayList<Warps>();
 		try {
 			ps = this.db().prepareStatement("SELECT `warpName`, `playerUUID`, `X`, `Y`, `Z`, `YAW`, `PITCH`, `world`, `public` FROM `ultrawarp` WHERE `warpName` = ?");
 			ps.setString(1, name);
@@ -144,7 +149,7 @@ public class DatabaseConnection {
 				w.setLocation(test);
 				w.setWorld(rs.getString(8));
 				w.setIsPublic(rs.getBoolean(9));
-				return w;
+				hah.add(w);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -157,15 +162,19 @@ public class DatabaseConnection {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return hah;
 	}
 	
-	public ArrayList<Warps> checkWarpByUUID(UUID ui) {
+	public ArrayList<Warps> checkWarpByUUID(UUID ui, boolean withPublic) {
 		PreparedStatement ps = null;
 		ArrayList<Warps> hah = new ArrayList<Warps>();
+		String query = "SELECT `warpName`, `playerUUID`, `X`, `Y`, `Z`, `YAW`, `PITCH`, `world`, `public` FROM `ultrawarp` WHERE `playerUUID` = ? OR `public` = ? ORDER BY id";
+		if(withPublic == false) {
+			query = "SELECT `warpName`, `playerUUID`, `X`, `Y`, `Z`, `YAW`, `PITCH`, `world`, `public` FROM `ultrawarp` WHERE `playerUUID` = ? ORDER BY id";
+		}
 		hah.clear();
 		try {
-			ps = this.db().prepareStatement("SELECT `warpName`, `playerUUID`, `X`, `Y`, `Z`, `YAW`, `PITCH`, `world`, `public` FROM `ultrawarp` WHERE `playerUUID` = ? OR `public` = ? ORDER BY id");
+			ps = this.db().prepareStatement(query);
 			ps.setString(1, ui.toString());
 			ps.setBoolean(2, true);
 			ps.execute();

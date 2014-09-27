@@ -50,7 +50,7 @@ public class GenerateConfigs {
 	    return customConfig;
 	}
 	
-	public void saveCustomConfig() {
+	public static void saveCustomConfig() {
 	    if (customConfig == null || customConfigFile == null) {
 	        return;
 	    }

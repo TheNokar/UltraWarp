@@ -92,16 +92,24 @@ public class CompassListener implements Listener {
 	}
 	
 	@EventHandler
-	public void playerRespawn(PlayerRespawnEvent event) {
+	public void playerRespawn(final PlayerRespawnEvent event) {
 		if(LoadConfig.sticky_compass) {
-			UsefullItems.addWarpCompass(event.getPlayer(), LoadConfig.compass_slot);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                public void run() {
+        			UsefullItems.addWarpCompass(event.getPlayer(), LoadConfig.compass_slot);
+                }
+            }, 1);
 		}
 	}
 	
 	@EventHandler
-	public void playerJoinEvent(PlayerJoinEvent event) {
+	public void playerJoinEvent(final PlayerJoinEvent event) {
 		if(LoadConfig.sticky_compass) {
-			UsefullItems.addWarpCompass(event.getPlayer(), LoadConfig.compass_slot);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                public void run() {
+        			UsefullItems.addWarpCompass(event.getPlayer(), LoadConfig.compass_slot);
+                }
+            }, 1);
 		}
 	}
 	
@@ -132,8 +140,19 @@ public class CompassListener implements Listener {
 	                    }, 0);
             		}
             	} else {
-            		WarpPlayer.playerTo(event.getName(), player, plugin);
+            		ArrayList<String> t = new ArrayList<String>();
+            		for(Warps w : wa.get(page)) {
+        				if(w.isPublic() && w.getPlayer().getName().equalsIgnoreCase(event.WaOwner())) {
+        					t.add("true");
+        				}
+        			}
+            		String n = null;
+            		if(t.contains("true")) {
+            			n = event.WaOwner();
+            		}
+            		WarpPlayer.playerTo(event.getName(), player, plugin, n);
             		event.setWillClose(true);
+            		event.setWillDestroy(true);
             	}
             }
         }, plugin);
@@ -146,10 +165,10 @@ public class CompassListener implements Listener {
 		} else {
 			v = Utils.buildString("&aPublic");
 		}
-		menu.setOption(pos, new ItemStack(mat, 1), w.getWarpName(), new String[] {Utils.buildString("&bLocation: &e" + (int)w.getLocation()[0] + ", " + (int)w.getLocation()[1] + ", " + (int)w.getLocation()[3]), Utils.buildString("&bStatus: ") + v});
+		menu.setOption(pos, new ItemStack(mat, 1), w.getWarpName(), new String[] {Utils.buildString("&bLocation: &e" + (int)w.getLocation()[0] + ", " + (int)w.getLocation()[1] + ", " + (int)w.getLocation()[3]), Utils.buildString("&bStatus: ") + v, Utils.buildString("&bOwner: &6" + w.getPlayer().getName())});
 	}
 	
-	public void createMenu(Player player, String name, HashMap<Integer, ArrayList<Warps>> wa, int page) {	
+	public void createMenu(Player player, String name, HashMap<Integer, ArrayList<Warps>> wa, int page) {
 		IconMenu menu = this.menus(player, name, wa);
 		if(wa.size() > 0) {
 			if(wa.containsKey(page+1)) {

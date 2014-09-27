@@ -19,6 +19,8 @@ public class LoadConfig {
 	public static boolean sticky_compass = config.getBoolean("plugin.sticky_compass");
 	public static int compass_slot = config.getInt("plugin.compass_slot");
 	public static String inventory_name = config.getString("plugin.inventory_name");
+	public static int max_warps = config.getInt("plugin.max_warps");
+	public static boolean cwtu = config.getBoolean("plugin.convert_warpsuite_to_ultrawarp");
 	
 	//Permissions
 	public static String permission_node = "ultrawarp.";

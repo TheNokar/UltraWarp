@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -66,13 +67,36 @@ public class IconMenu implements Listener {
         	destroy();
         }
     }
+    
+    @EventHandler(priority=EventPriority.MONITOR)
+    void onInventoryClose(PlayerDeathEvent event) {
+        if (event.getEntity().getOpenInventory().getTitle().equals(name)) {
+        	destroy();
+        }
+    }
+    
     @EventHandler(priority=EventPriority.MONITOR)
     void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getTitle().equals(name)) {
             event.setCancelled(true);
             int slot = event.getRawSlot();
             if (slot >= 0 && slot < size && optionNames[slot] != null) {
-                OptionClickEvent e = new OptionClickEvent((Player)event.getWhoClicked(), slot, optionNames[slot]);
+            	ItemStack item = event.getInventory().getItem(slot);
+            	ItemMeta im = item.getItemMeta();
+            	String owner = null;
+            	boolean isPublic = false;
+            	for(String iml : im.getLore()) {
+            		if(iml.toLowerCase().contains("owner")) {
+            			String uh = iml.split(":")[1].replace(" ", "");
+            			owner = Utils.removeChar(uh);
+            		} else if(iml.toLowerCase().contains("owner")) {
+            			String uh = iml.split(":")[1].replace(" ", "");
+            			if(uh.toLowerCase().contains("public")) {
+            				isPublic = true;
+            			}
+            		}
+            	}
+                OptionClickEvent e = new OptionClickEvent((Player)event.getWhoClicked(), slot, optionNames[slot], isPublic, owner);
                 handler.onOptionClick(e);
                 if (e.willClose()) {
                     final Player p = (Player)event.getWhoClicked();
@@ -95,15 +119,27 @@ public class IconMenu implements Listener {
         private String name;
         private boolean close;
         private boolean destroy;
+        private boolean isPublic;
+        private String wowner;
        
-        public OptionClickEvent(Player player, int position, String name) {
+        public OptionClickEvent(Player player, int position, String name, boolean isPublic, String wowner) {
             this.player = player;
             this.position = position;
             this.name = name;
             this.close = true;
             this.destroy = false;
+            this.isPublic = isPublic;
+            this.wowner = wowner;
         }
        
+        public boolean isPublic() {
+        	return this.isPublic;
+        }
+        
+        public String WaOwner() {
+        	return this.wowner;
+        }
+        
         public Player getPlayer() {
             return player;
         }

@@ -17,8 +17,8 @@ public class ListCommand extends BaseCommand {
 
 	@Override
 	public boolean execute() {
-		ArrayList<Warps> w = plugin.db.checkWarpByUUID(player.getUniqueId());
-		if(w != null) {
+		ArrayList<Warps> w = plugin.db.checkWarpByUUID(player.getUniqueId(), false);
+		if(w.size() > 0) {
 			StringBuilder builder = new StringBuilder();
 			for(Warps warp : w) {
 				if(warp.getPlayerUUID().equals(player.getUniqueId()) || player.hasPermission(permission() + "admin")) {
