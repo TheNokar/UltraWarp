@@ -24,7 +24,7 @@ Permissions
 ultrawarp.user - All the default permissions
     
     Children: 
-    ultrawarp.warp, ultrawarp.warp.create, ultrawarp.warp.remove, ultrawarp.warp.list
+    ultrawarp.warp, ultrawarp.warp.create, ultrawarp.warp.remove, ultrawarp.warp.list, ultrawarp.public
     
 ultrawarp.admin - By pass all things were player has to own the warp.
 
