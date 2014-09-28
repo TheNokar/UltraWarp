@@ -1,9 +1,9 @@
 name: UltraWarp
-version: 0.0.1
+version: 0.0.2
 main: net.plommer.UltraWarp.UltraWarp
 author: [TheNokar]
-softdepend: [Essentials, CommandBook, WarpSuite]
-loadbefore: [Essentials, CommandBook, WarpSuite]
+softdepend: [Essentials, CommandBook]
+loadbefore: [Essentials, CommandBook]
 commands:
     warp:
         description: Default Warps command!

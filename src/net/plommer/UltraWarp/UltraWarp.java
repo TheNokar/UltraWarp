@@ -48,9 +48,6 @@ public class UltraWarp extends JavaPlugin {
 		      }
 		}
 		db = new DatabaseConnection(this);
-		if(LoadConfig.cwtu == true) {
-			new WarpSuiteToUltraWarp(this);
-		}
 	}
 	
 	public void onDisable() {
